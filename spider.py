@@ -10,9 +10,6 @@ class MongoSpider(CrawlSpider):
     name = 'mongo-spider'
 
     custom_settings = {
-        'MONGO_URI': 'mongodb://localhost:27017/',
-        'MONGO_DATABASE': 'test',
-        'DEPTH_LIMIT': 4,
         'ITEM_PIPELINES': {
             'pipelines.MongoPipeline': 100
         }
