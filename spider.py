@@ -35,7 +35,7 @@ class MongoSpider(CrawlSpider):
         item['path'] = parsed_url.path
         item['query'] = parsed_url.query
         item['status'] = response.status
-        # item['headers'] = response.headers
+        item['headers'] = response.headers
         item['body'] = response.body
 
         return item

@@ -26,6 +26,15 @@ class MongoPipeline(object):
     def process_item(self, item, spider):
         item['body'] = htmlmin.minify(item['body'].decode('utf-8'))
 
+        cleaned_headers = []
+        for key, value in item['headers'].items():
+            cleaned_headers.append({
+                'name': key.decode('utf-8'),
+                'value': value[0].decode('utf-8')
+            })
+        
+        item['headers'] = cleaned_headers
+
         self.db[self.collection_name].update({
             'base_url': item['base_url'],
             'path': item['path'],
