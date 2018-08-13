@@ -7,4 +7,5 @@ class PageItem(Item):
     query = Field()
     status = Field()
     headers = Field()
+    cookies = Field()
     body = Field()
