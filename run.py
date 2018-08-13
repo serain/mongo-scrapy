@@ -1,5 +1,8 @@
 import argparse
-from scrapy.crawler import CrawlerProcess
+from scrapy.crawler import CrawlerRunner
+from scrapy.utils.log import configure_logging
+from twisted.internet import reactor
+from twisted.internet.defer import inlineCallbacks
 
 from spider import MongoSpider
 
@@ -22,18 +25,23 @@ def main():
     with open(args.input_list) as fh:
         urls = fh.read().splitlines()
 
-    for url in urls:
-        process = CrawlerProcess({
-            'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
-            'MONGO_HOST': args.mongo_host,
-            'MONGO_DB': args.mongo_db,
-            'DEPTH_LIMIT': 4
-        })
+    configure_logging({'LOG_FORMAT': '%(levelname)s: %(message)s'})
+    runner = CrawlerRunner({
+                'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+                'MONGO_HOST': args.mongo_host,
+                'MONGO_DB': args.mongo_db,
+                'DEPTH_LIMIT': 4
+             })
 
-        process.crawl(MongoSpider, url)
-        process.start()
 
-        exit()
+    @inlineCallbacks
+    def loop_urls(urls):
+        for url in urls:
+            yield runner.crawl(MongoSpider, url)
+        reactor.stop()
+
+    loop_urls(urls)
+    reactor.run()
 
 
 if __name__ == '__main__':
