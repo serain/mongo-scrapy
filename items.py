@@ -9,3 +9,6 @@ class PageItem(Item):
     headers = Field()
     cookies = Field()
     body = Field()
+
+    def __str__(self):
+        return super(PageItem, self).__str__().replace('\n', '')[:50] + '...'
