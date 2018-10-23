@@ -17,6 +17,7 @@ def get_args():
     parser.add_argument('--mongo-db', default='crawler',
                         help='mongo database')
     parser.add_argument('--depth', default=4, help='crawl depth')
+    parser.add_argument('--dirbust-list', help='list to brute-force')
 
     return parser.parse_args()
 
@@ -40,7 +41,9 @@ def main():
                 'MONGO_DB': args.mongo_db,
                 'DEPTH_LIMIT': args.depth,
                 'DNS_TIMEOUT': 5,
-                'DOWNLOAD_TIMEOUT': 5, 
+                'DOWNLOAD_TIMEOUT': 5,
+                'DIRBUST_LIST': args.dirbust_list,
+                'DIRBUST_ENABLED': True if args.dirbust_list else False
              })
 
 

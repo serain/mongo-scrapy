@@ -3,22 +3,23 @@ import itertools
 from urllib.parse import urlparse, urlunparse, urljoin
 
 from scrapy.http import Request
+from scrapy.exceptions import NotConfigured
 
 logger = logging.getLogger(__name__)
 
 
-dirbust_dict = [
-    'hello',
-    'world',
-    'foo',
-    'bar'
-]
-
-
 class DirbustMiddleware(object):
 
-    def __init__(self):
+    def __init__(self, dirbust_list):
         self.dirbusted = set()
+        self.dirbust_list = dirbust_list
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        if not crawler.settings.getbool('DIRBUST_ENABLED'):
+            raise NotConfigured
+        obj = cls(crawler.settings.get('DIRBUST_LIST'))
+        return obj
 
     def process_spider_output(self, response, result, spider):
         def _get_base_urls(url):
@@ -38,6 +39,7 @@ class DirbustMiddleware(object):
                         continue
                     logger.debug(f'Dirbusting base URL {base_url}')
                     self.dirbusted.add(base_url)
-                    for word in dirbust_dict:
-                        yield Request(urljoin(base_url, word))
+                    with open(self.dirbust_list) as fh:
+                        for line in fh:
+                            yield Request(urljoin(base_url, line.strip()))
             yield r
