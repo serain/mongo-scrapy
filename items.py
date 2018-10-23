@@ -4,7 +4,7 @@ from scrapy.item import Item, Field
 class PageItem(Item):
     url = Field()
     base_url = Field()
-    previous_page = Field()
+    previous_page_id = Field()
     path = Field()
     query = Field()
     status = Field()

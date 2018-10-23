@@ -2,23 +2,45 @@ import logging
 import itertools
 from urllib.parse import urlparse, urlunparse, urljoin
 
+import pymongo
 from scrapy.http import Request
+from scrapy.signals import spider_opened, spider_closed
 from scrapy.exceptions import NotConfigured
 
 logger = logging.getLogger(__name__)
 
 
 class PreviousPageMiddleware(object):
+    collection_name = 'pages'
+
+    def __init__(self, mongo_host, mongo_db):
+        self.mongo_host = mongo_host
+        self.mongo_db = mongo_db
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        obj = cls(crawler.settings.get('MONGO_HOST'), crawler.settings.get('MONGO_DB'))
+        crawler.signals.connect(obj.open_spider, signal=spider_opened)
+        crawler.signals.connect(obj.close_spider, signal=spider_closed)
+        return obj
+
+    def open_spider(self, spider):
+        self.client = pymongo.MongoClient(host=self.mongo_host)
+        self.db = self.client[self.mongo_db]
+
+    def close_spider(self, spider):
+        self.client.close()
 
     def process_spider_output(self, response, result, spider):
+        prev_page_id = self.db[self.collection_name].find_one({'url': response.url})['_id']
         for r in result:
             if isinstance(r, Request):
-                r.meta['previous_page'] = response.url
+                r.meta['previous_page_id'] = prev_page_id
             yield r
 
     def process_start_requests(self, start_requests, spider):
         for r in start_requests:
-            r.meta['previous_page'] = None
+            r.meta['previous_page_id'] = None
         yield r
 
 
