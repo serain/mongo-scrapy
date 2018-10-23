@@ -50,7 +50,7 @@ You can omit the `--dirbust-list` argument if you don't want to dirbust.
 
 By default, all crawled pages will be stored on the `crawler` database, in the `pages` collection. A random record looks like:
 
-```json
+```terminal
 $ mongo crawler
 > db.pages.find().limit(1)
 {
@@ -84,7 +84,7 @@ $ mongo crawler
       "name": "sessionid",
       "value": "dc9f9c37e4b270e3e6129a7dd2ca166"
     }
-  ]
+  ],
   "body": "<!DOCTYPE HTML PUBLIC>..."
 }
 ```
