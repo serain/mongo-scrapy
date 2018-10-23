@@ -37,7 +37,7 @@ def main():
                 'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
                 'MONGO_HOST': args.mongo_host,
                 'MONGO_DB': args.mongo_db,
-                'DEPTH_LIMIT': 1,
+                'DEPTH_LIMIT': 4,
                 'DNS_TIMEOUT': 5,
                 'DOWNLOAD_TIMEOUT': 5, 
              })
