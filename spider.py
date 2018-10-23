@@ -35,6 +35,7 @@ class MongoSpider(CrawlSpider):
         parsed_url = urlparse(response.url)
 
         item = PageItem()
+        item['url'] = response.url
         item['base_url'] = self.start_urls[0]
         item['previous_page'] = response.meta['previous_page'] if 'previous_page' in response.meta else None
         item['path'] = parsed_url.path

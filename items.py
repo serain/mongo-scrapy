@@ -2,6 +2,7 @@ from scrapy.item import Item, Field
 
 
 class PageItem(Item):
+    url = Field()
     base_url = Field()
     previous_page = Field()
     path = Field()
