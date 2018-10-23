@@ -12,6 +12,9 @@ class MongoSpider(CrawlSpider):
     custom_settings = {
         'ITEM_PIPELINES': {
             'pipelines.MongoPipeline': 100
+        },
+        'SPIDER_MIDDLEWARES': {
+            'middlewares.DirbustMiddleware': 100
         }
     }
 
