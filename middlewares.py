@@ -8,6 +8,15 @@ from scrapy.exceptions import NotConfigured
 logger = logging.getLogger(__name__)
 
 
+class PreviousPageMiddleware(object):
+
+    def process_spider_output(self, response, result, spider):
+        for r in result:
+            if isinstance(r, Request):
+                r.meta['previous_page'] = response.url
+            yield r
+
+
 class DirbustMiddleware(object):
 
     def __init__(self, dirbust_list):

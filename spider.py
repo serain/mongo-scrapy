@@ -14,7 +14,8 @@ class MongoSpider(CrawlSpider):
             'pipelines.MongoPipeline': 100
         },
         'SPIDER_MIDDLEWARES': {
-            'middlewares.DirbustMiddleware': 100
+            'middlewares.DirbustMiddleware': 200,
+            'middlewares.PreviousPageMiddleware': 100
         }
     }
 
@@ -35,6 +36,7 @@ class MongoSpider(CrawlSpider):
 
         item = PageItem()
         item['base_url'] = self.start_urls[0]
+        item['previous_page'] = response.meta['previous_page'] if 'previous_page' in response.meta else None
         item['path'] = parsed_url.path
         item['query'] = parsed_url.query
         item['status'] = response.status
