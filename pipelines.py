@@ -1,6 +1,5 @@
 import re
 import pymongo
-import htmlmin
 
 
 class MongoPipeline(object):
@@ -25,7 +24,7 @@ class MongoPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        item['body'] = htmlmin.minify(item['body'].decode('utf-8'))
+        item['body'] = item['body'].decode('utf-8')
 
         # parse out the headers
         cleaned_headers = []
