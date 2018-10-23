@@ -42,11 +42,7 @@ class MongoPipeline(object):
                 item['cookies'] = self._get_cookies(header['value'])
                 break
 
-        self.db[self.collection_name].update({
-            'base_url': item['base_url'],
-            'path': item['path'],
-            'query': item['query']
-        }, item, upsert=True)
+        self.db[self.collection_name].update({'url': item['url']}, item, upsert=True)
 
         return item
 
