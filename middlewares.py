@@ -16,6 +16,11 @@ class PreviousPageMiddleware(object):
                 r.meta['previous_page'] = response.url
             yield r
 
+    def process_start_requests(self, start_requests, spider):
+        for r in start_requests:
+            r.meta['previous_page'] = None
+        yield r
+
 
 class DirbustMiddleware(object):
 
