@@ -11,12 +11,17 @@ from scrapy.downloadermiddlewares.redirect import BaseRedirectMiddleware
 logger = logging.getLogger(__name__)
 
 
-class SpiderRedirectMiddleware(object):
+class SpiderRedirectMiddleware(BaseRedirectMiddleware):
     """
     Create redirect requests from Spider middleware instead of Downloader
     middleware. Allows spidering the redirects and creating items to store
     redirect responses.
     """
+
+    def __init__(self, settings):
+        # redefined to exclude REDIRECT_ENABLED check (base class)
+        self.max_redirect_times = settings.getint('REDIRECT_MAX_TIMES')
+        self.priority_adjust = settings.getint('REDIRECT_PRIORITY_ADJUST')
 
     def process_spider_output(self, response, result, spider):
         for r in result:
