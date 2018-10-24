@@ -3,6 +3,8 @@ import itertools
 from urllib.parse import urlparse, urlunparse, urljoin
 
 import pymongo
+from w3lib.url import safe_url_string
+
 from scrapy.http import Request
 from scrapy.signals import spider_opened, spider_closed
 from scrapy.exceptions import NotConfigured
@@ -26,6 +28,21 @@ class SpiderRedirectMiddleware(BaseRedirectMiddleware):
     def process_spider_output(self, response, result, spider):
         for r in result:
             yield r
+
+        allowed_status = (301, 302, 303, 307, 308)
+        if 'Location' not in response.headers or response.status not in allowed_status:
+            return
+
+        location = safe_url_string(response.headers['location'])
+
+        redirected_url = urljoin(response.request.url, location)
+
+        if response.status in (301, 307, 308) or response.request.method == 'HEAD':
+            redirected = response.request.replace(url=redirected_url)
+            yield self._redirect(redirected, response.request, spider, response.status)
+
+        redirected = self._redirect_request_using_get(response.request, redirected_url)
+        yield self._redirect(redirected, response.request, spider, response.status)
 
 
 class PreviousPageMiddleware(object):
