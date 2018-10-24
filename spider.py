@@ -14,7 +14,7 @@ class MongoSpider(CrawlSpider):
             'pipelines.MongoPipeline': 100
         },
         'SPIDER_MIDDLEWARES': {
-            'middlewares.DirbustMiddleware': 200,
+            'middlewares.DirbustMiddleware': 1100,
             'middlewares.PreviousPageMiddleware': 100
         }
     }
