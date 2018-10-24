@@ -17,7 +17,8 @@ class MongoSpider(CrawlSpider):
             'middlewares.DirbustMiddleware': 200,
             'middlewares.PreviousPageMiddleware': 100,
             'middlewares.SpiderRedirectMiddleware': 1000
-        }
+        },
+        'REDIRECT_ENABLED': False
     }
 
     rules = (
