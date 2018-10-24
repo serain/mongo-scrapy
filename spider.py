@@ -46,5 +46,6 @@ class MongoSpider(CrawlSpider):
         item['status'] = response.status
         item['headers'] = response.headers
         item['body'] = response.body
+        item['dirbust'] = response.meta['dirbust'] if 'dirbust' in response.meta else False
 
         return item

@@ -124,4 +124,4 @@ class DirbustMiddleware(object):
             self.dirbusted.add(base_url)
             with open(self.dirbust_list) as fh:
                 for line in fh:
-                    yield Request(urljoin(base_url, line.strip()))
+                    yield Request(urljoin(base_url, line.strip()), meta={'dirbust': True})
