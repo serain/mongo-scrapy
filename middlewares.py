@@ -55,7 +55,7 @@ class PreviousPageMiddleware(object):
     def process_start_requests(self, start_requests, spider):
         for r in start_requests:
             r.meta['previous_page_id'] = None
-        yield r
+            yield r
 
 
 class DirbustMiddleware(object):

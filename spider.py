@@ -14,12 +14,18 @@ class MongoSpider(CrawlSpider):
             'pipelines.MongoPipeline': 100
         },
         'SPIDER_MIDDLEWARES': {
+<<<<<<< HEAD
             'middlewares.DirbustMiddleware': 200,
             'middlewares.PreviousPageMiddleware': 100,
             'middlewares.SpiderRedirectMiddleware': 1000
         },
         'REDIRECT_ENABLED': False,
         'HTTPERROR_ALLOWED_CODES': [301, 302, 303, 307, 308]
+=======
+            'middlewares.DirbustMiddleware': 1100,
+            'middlewares.PreviousPageMiddleware': 100
+        }
+>>>>>>> master
     }
 
     rules = (
