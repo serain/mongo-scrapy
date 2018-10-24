@@ -6,8 +6,21 @@ import pymongo
 from scrapy.http import Request
 from scrapy.signals import spider_opened, spider_closed
 from scrapy.exceptions import NotConfigured
+from scrapy.downloadermiddlewares.redirect import BaseRedirectMiddleware
 
 logger = logging.getLogger(__name__)
+
+
+class SpiderRedirectMiddleware(BaseRedirectMiddleware):
+    """
+    Create redirect requests from Spider middleware instead of Downloader
+    middleware. Allows spidering the redirects and creating items to store
+    redirect responses.
+    """
+
+    def process_spider_output(self, response, result, spider):
+        for r in result:
+            yield r
 
 
 class PreviousPageMiddleware(object):
