@@ -32,7 +32,8 @@ class PreviousPageMiddleware(object):
         self.client.close()
 
     def process_spider_output(self, response, result, spider):
-        prev_page_id = self.db[self.collection_name].find_one({'url': response.url})['_id']
+        prev_page = self.db[self.collection_name].find_one({'url': response.url})
+        prev_page_id = prev_page['_id'] if prev_page else None
         for r in result:
             if isinstance(r, Request):
                 r.meta['previous_page_id'] = prev_page_id
