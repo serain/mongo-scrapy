@@ -19,7 +19,7 @@ class MongoSpider(CrawlSpider):
             'middlewares.SpiderRedirectMiddleware': 1000
         },
         'REDIRECT_ENABLED': False,
-        'HTTPERROR_ALLOWED_CODES': [301, 302, 303, 307, 308]
+        'HTTPERROR_ALLOW_ALL': True
     }
 
     rules = (
