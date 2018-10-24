@@ -18,7 +18,8 @@ class MongoSpider(CrawlSpider):
             'middlewares.PreviousPageMiddleware': 100,
             'middlewares.SpiderRedirectMiddleware': 1000
         },
-        'REDIRECT_ENABLED': False
+        'REDIRECT_ENABLED': False,
+        'HTTPERROR_ALLOWED_CODES': [301, 302, 303, 307, 308]
     }
 
     rules = (
