@@ -1,9 +1,14 @@
+import logging
 from urllib.parse import urlparse
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 
 from items import PageItem
 from pipelines import MongoPipeline
+from hashes import get_not_found_hashes
+
+
+logger = logging.getLogger(__name__)
 
 
 class MongoSpider(CrawlSpider):
@@ -30,6 +35,9 @@ class MongoSpider(CrawlSpider):
         super(MongoSpider, self).__init__(*args, **kwargs)
         self.start_urls = [start_url]
         self.allowed_domains = [urlparse(start_url).netloc]
+        self.not_found_hashes = get_not_found_hashes(start_url)
+
+        logger.debug(f'Using the following "Not Found" hashes: {self.not_found_hashes}')
 
     def parse_start_url(self, response):
         return self.parse_page(response)
