@@ -29,7 +29,7 @@ class MongoSpider(CrawlSpider):
     }
 
     rules = (
-        Rule(LinkExtractor(allow=('', )), callback='parse_page'),
+        Rule(LinkExtractor(allow=('', ), tags=('a', 'area', 'script'), attrs=('href', 'src')), callback='parse_page'),
     )
 
     def __init__(self, start_url,  *args, **kwargs):
