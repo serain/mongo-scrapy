@@ -5,12 +5,37 @@ from urllib.parse import urlparse, urlunparse, urljoin
 import pymongo
 from w3lib.url import safe_url_string
 
+from scrapy import Item
 from scrapy.http import Request
 from scrapy.signals import spider_opened, spider_closed
 from scrapy.exceptions import NotConfigured
 from scrapy.downloadermiddlewares.redirect import BaseRedirectMiddleware
 
+from hashes import get_hash
+
+
 logger = logging.getLogger(__name__)
+
+
+class FilterDirbustItemsMiddleware(object):
+    """
+    Removes any "Not Found" responses that result from a dirbust request
+    """
+
+    def __init__(self, not_found_hashes):
+        self.not_found_hashes = not_found_hashes
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.spider.not_found_hashes)
+
+    def process_spider_output(self, response, result, spider):
+        for r in result:
+            if isinstance(r, Item) and r['dirbust']:
+                if not r['hash'] in self.not_found_hashes:
+                    yield r
+            else:
+                yield r
 
 
 class SpiderRedirectMiddleware(BaseRedirectMiddleware):

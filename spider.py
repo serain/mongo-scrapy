@@ -5,7 +5,7 @@ from scrapy.linkextractors import LinkExtractor
 
 from items import PageItem
 from pipelines import MongoPipeline
-from hashes import get_not_found_hashes
+from hashes import get_not_found_hashes, get_hash
 
 
 logger = logging.getLogger(__name__)
@@ -19,9 +19,10 @@ class MongoSpider(CrawlSpider):
             'pipelines.MongoPipeline': 100
         },
         'SPIDER_MIDDLEWARES': {
-            'middlewares.DirbustMiddleware': 200,
+            'middlewares.DirbustMiddleware': 300,
             'middlewares.PreviousPageMiddleware': 100,
-            'middlewares.SpiderRedirectMiddleware': 1000
+            'middlewares.SpiderRedirectMiddleware': 1000,
+            'middlewares.FilterDirbustItemsMiddleware': 200
         },
         'REDIRECT_ENABLED': False,
         'HTTPERROR_ALLOW_ALL': True
@@ -55,5 +56,6 @@ class MongoSpider(CrawlSpider):
         item['headers'] = response.headers
         item['body'] = response.body
         item['dirbust'] = response.meta['dirbust'] if 'dirbust' in response.meta else False
+        item['hash'] = get_hash(response.body.decode())
 
         return item

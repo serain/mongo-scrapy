@@ -12,6 +12,7 @@ class PageItem(Item):
     cookies = Field()
     body = Field()
     dirbust = Field()
+    hash = Field()
 
     def __str__(self):
         return super(PageItem, self).__str__().replace('\n', '')[:50] + '...'
