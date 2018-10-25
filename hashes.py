@@ -13,14 +13,14 @@ REQUEST_TIMEOUT = 5
 
 
 def get_hash(body):
-    return hashlib.md5(body).hexdigest()
+    return hashlib.md5(body.encode()).hexdigest()
 
 
 def fetch_hash(base_url, path):
     url = urljoin(base_url, path)
     response = requests.get(url, timeout=REQUEST_TIMEOUT, verify=False, allow_redirects=False)
 
-    return get_hash(response.text.encode())
+    return get_hash(response.text)
 
 
 def get_not_found_hashes(base_url):
