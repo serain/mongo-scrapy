@@ -24,6 +24,7 @@ class FilterDirbustItemsMiddleware(object):
 
     def __init__(self, not_found_hashes):
         self.not_found_hashes = not_found_hashes
+        self.stored_one_not_found = False
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -34,6 +35,12 @@ class FilterDirbustItemsMiddleware(object):
             if isinstance(r, Item) and r['dirbust']:
                 if not r['hash'] in self.not_found_hashes:
                     yield r
+                elif not self.stored_one_not_found:
+                    logger.debug(f'Storing one copy of a dirbust "not found" page for {r["url"]}')
+                    self.stored_one_not_found = True
+                    yield r
+                else:
+                    logger.debug(f'Ignoring {r["url"]} because it\'s a dirbust "not found" page')
             else:
                 yield r
 
