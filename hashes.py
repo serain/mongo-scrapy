@@ -10,6 +10,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 MAX_WORKERS = 5
 REQUEST_TIMEOUT = 5
+# number of random URLs to test
+TEST_COUNT = 10
 
 
 def get_hash(body):
@@ -24,7 +26,7 @@ def fetch_hash(base_url, path):
 
 
 def get_not_found_hashes(base_url):
-    rand_paths = [''.join(random.choices(string.hexdigits, k=10)) for i in range(0, 10)]
+    rand_paths = [''.join(random.choices(string.hexdigits, k=10)) for i in range(0, TEST_COUNT)]
     hashes = set()
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
