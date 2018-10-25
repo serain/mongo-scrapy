@@ -13,7 +13,7 @@ REQUEST_TIMEOUT = 5
 
 
 def get_hash(body):
-    return hashlib.md5().hexdigest()
+    return hashlib.md5(body).hexdigest()
 
 
 def fetch_hash(base_url, path):
