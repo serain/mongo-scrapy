@@ -1,3 +1,4 @@
+import os
 import logging
 from urllib.parse import urlparse
 from scrapy.spiders import CrawlSpider, Rule
@@ -57,5 +58,6 @@ class MongoSpider(CrawlSpider):
         item['body'] = response.body
         item['dirbust'] = response.meta['dirbust'] if 'dirbust' in response.meta else False
         item['hash'] = get_hash(response.body.decode())
+        item['extension'] = os.path.splitext(parsed_url.path)[1]
 
         return item

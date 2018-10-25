@@ -13,6 +13,7 @@ class PageItem(Item):
     body = Field()
     dirbust = Field()
     hash = Field()
+    extension = Field()
 
     def __str__(self):
         return super(PageItem, self).__str__().replace('\n', '')[:50] + '...'
