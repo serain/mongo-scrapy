@@ -34,9 +34,10 @@ class MongoPipeline(object):
         item['headers'] = cleaned_headers
 
         # if there's a 'set-cookie' header, parse out the cookies
+        item['cookies'] = []
         for header in item['headers']:
             if header['name'] == 'set-cookie':
-                item['cookies'] = self._get_cookies(header['value'])
+                item['cookies'] += self._get_cookies(header['value'])
                 break
 
         self.db[self.collection_name].update({'url': item['url']}, item, upsert=True)
