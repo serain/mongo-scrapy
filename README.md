@@ -15,7 +15,7 @@ I occasionally need to crawl 1000s of URLs and run some queries on the data. Thi
 
 ## Limitations
 
-* Dirbust signature based only on HTTP code, will make better
+* Dirbust signature based on body MD5 hash, this naturally isn't foolproof and leads to dirbust "loops" or "storms" on some websites
 * Won't work on modern frameworks that rely heavily on JavaScript for navigation, will support Splash in the future
 * Database modelling is hacky
 
