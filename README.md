@@ -6,7 +6,7 @@ Crawl and dirbust a list of URLs and store it all in a MongoDB, parsing out head
 
 ## Use cases
 
-I occasionally need to crawl 1000s of URLs and run some queries on the data. This may work for you if you're trying to answer questions like which websites:
+This may work for you if you're trying to answer questions like which websites:
 
 * have a certain header
 * set a cookie name/value
